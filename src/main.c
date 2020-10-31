@@ -41,8 +41,6 @@
 #include "bme280.h"
 #include "bme280_defs.h"
 
-#include "lcd.h"
-
 #include "bcm2835.h"
 
 // LCD definitions
@@ -110,7 +108,7 @@ void user_delay_us(uint32_t period, void *intf_ptr);
  * Humidity
  *
  */
-void print_sensor_data(struct bme280_data *comp_data, float temp_ext, float temperature);
+void print_sensor_data(struct bme280_data *comp_data);
 
 /*!
  *  @brief Function for reading the sensor's registers through I2C bus.
@@ -159,7 +157,7 @@ int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
  * @retval BME280_E_NVM_COPY_FAILED - Error: NVM copy failed
  *
  */
-int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float TI, float TR);
+int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev);
 
 int initial_config_uart();
 
@@ -205,29 +203,11 @@ int main(int argc, char* argv[])
 //#endif
 
     int uart0_filestream = initial_config_uart();
-    
-    int opcao;
-    printf("1- Temperatura pelo potenciometro\n");
-    printf("2- Escolher manualmente\n");
-    printf("Escolha uma das opções: ");
-    scanf("%d",&opcao);
 
-    float TR;
-
-    switch(opcao){
-        case 1:
-            printf("1\n");
-            write_uart(uart0_filestream, 0xA2);
-            TR = read_uart(uart0_filestream);
-            break;
-        case 2:
-            printf("Escolha a temperatura desejada: ");
-            scanf("%f", &TR);
-            break;
-    }
+    float temp;
     
     write_uart(uart0_filestream, 0xA1);
-    float TI = read_uart(uart0_filestream);
+    temp = read_uart(uart0_filestream);
 
     dev.intf = BME280_I2C_INTF;
     dev.read = user_i2c_read;
@@ -245,7 +225,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    rslt = stream_sensor_data_forced_mode(&dev, TI, TR);
+    rslt = stream_sensor_data_forced_mode(&dev);
     if (rslt != BME280_OK)
     {
         fprintf(stderr, "Failed to stream sensor data (code %+d).\n", rslt);
@@ -305,30 +285,29 @@ int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
 /*!
  * @brief This API used to print the sensors temperatures.
  */
-void print_sensor_data(struct bme280_data *comp_data, float temp_int, float temperature)
+void print_sensor_data(struct bme280_data *comp_data)
 {
-    float ti, te, tr;
-
-    ti = temp_int;
-
-    tr = temperature;
+    float temp, umi;
 
 #ifdef BME280_FLOAT_ENABLE
-    te = comp_data->temperature;
+    temp = comp_data->temperature;
+    umi = comp_data->humidity;
 #else
 #ifdef BME280_64BIT_ENABLE
-    ti = 0.01f * comp_data->temperature;
+    temp = 0.01f * comp_data->temperature;
+    umi = 0.01f * comp_data->humidity;
 #else
-    ti = 0.01f * comp_data->temperature;
+    temp = 0.01f * comp_data->temperature;
+    umi = 0.01f * comp_data->humidity;
 #endif
 #endif
-    printf("TI: %0.2lf deg C, TE: %0.2lf deg C, TR: %0.2lf deg C\n", ti, te, tr);
+    printf("Temperatura: %0.2lf deg C, Umidade: %0.2lf\n", temp, umi);
 }
 
 /*!
  * @brief This API reads the sensor temperature, pressure and humidity data in forced mode.
  */
-int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float TI, float TR)
+int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
 {
     /* Variable to define the result */
     int8_t rslt = BME280_OK;
@@ -399,24 +378,14 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float TI, float TR
             fprintf(stderr, "Failed to get sensor data (code %+d).", rslt);
             break;
         }
-            float TE = comp_data.temperature;
-       	    print_sensor_data(&comp_data, TI, TR);
+            float temp = comp_data.temperature;
+            float umi = comp_data.humidity;
+       	    print_sensor_data(&comp_data, temp, umi);
 	        printf("%s",asctime(timeinfo));
-            fprintf(file, "Medicao %d - Hora: %s - TR: %f - TI: %f - TE: %f\n", i+1, asctime(timeinfo), TR, TI, TE);
+            fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
             i++;
 	        sleep(2);
             fclose(file);
-
-            lcd_init(); 
-            ClrLcd();
-            lcdLoc(LINE1);
-            typeln("TR: ");
-            typeFloat(TR);
-            typeln("TI: ");
-            typeFloat(TI);
-            lcdLoc(LINE2);
-            typeln("TE: ");
-            typeFloat(TE);
 
             if (!bcm2835_init())
                 return 1;
@@ -425,7 +394,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float TI, float TR
             bcm2835_gpio_fsel(RES, BCM2835_GPIO_FSEL_OUTP);
             bcm2835_gpio_fsel(VEN, BCM2835_GPIO_FSEL_OUTP);
 
-            if(TI < TR){
+            if(temp < 25.00){
                 bcm2835_gpio_write(RES, LOW);
                 bcm2835_gpio_write(VEN, HIGH);
                 printf("liga resistor\n");
