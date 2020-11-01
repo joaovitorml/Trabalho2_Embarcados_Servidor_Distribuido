@@ -392,7 +392,6 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
                 return 1;
  
             config_gpio_proj();
-
             bcm2835_close();
     }
 

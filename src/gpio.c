@@ -25,23 +25,39 @@
 
 
 void config_gpio_proj(){
-    gpio(L1);
-    gpio(L2);
-    gpio(L3);
-    gpio(L4);
-    gpio(A1);
-    gpio(A2);
-    gpio(SP1);
-    gpio(SP2);
-    gpio(SA1);
-    gpio(SA2);
-    gpio(SA3);
-    gpio(SA4);
-    gpio(SA5);
-    gpio(SA6);
+    gpio_lamp_ar(L1);
+    gpio_lamp_ar(L2);
+    gpio_lamp_ar(L3);
+    gpio_lamp_ar(L4);
+    gpio_lamp_ar(A1);
+    gpio_lamp_ar(A2);
+    gpio_sensores(SP1);
+    gpio_sensores(SP2);
+    gpio_sensores(SA1);
+    gpio_sensores(SA2);
+    gpio_sensores(SA3);
+    gpio_sensores(SA4);
+    gpio_sensores(SA5);
+    gpio_sensores(SA6);
 }
 
-void gpio(char porta) {
+void gpio_lamp_ar(char porta, int input_user){
+    // Set the pin to be an output
+            bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_OUTP);
+
+            if(input user){
+                bcm2835_gpio_write(porta, LOW);
+                printf("liga porta %c", porta);
+                delay(2);
+            }
+            else{
+                bcm2835_gpio_write(porta, HIGH);
+                printf("desliga porta %c", porta);
+                delay(2);
+            }
+}
+
+void gpio_sensores(char porta) {
 
     // Define a prioridade do programa / thread como máxima 
     const struct sched_param priority = {1};
