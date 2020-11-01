@@ -37,9 +37,10 @@
 #include <fcntl.h>
 #include <time.h>          //Used for UART
 #include <fcntl.h>          //Used for UART
-#include <termios.h>        //Used for UART
+#include <termios.h>       //Used for UART
 #include "bme280.h"
 #include "bme280_defs.h"
+#include "gpio.h"
 
 #include "bcm2835.h"
 
@@ -390,22 +391,8 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
             if (!bcm2835_init())
                 return 1;
  
-            // Set the pin to be an output
-            bcm2835_gpio_fsel(RES, BCM2835_GPIO_FSEL_OUTP);
-            bcm2835_gpio_fsel(VEN, BCM2835_GPIO_FSEL_OUTP);
+            config_gpio_proj();
 
-            if(temp < 25.00){
-                bcm2835_gpio_write(RES, LOW);
-                bcm2835_gpio_write(VEN, HIGH);
-                printf("liga resistor\n");
-                delay(2);
-            }
-            else{
-                bcm2835_gpio_write(RES, HIGH);
-                bcm2835_gpio_write(VEN, LOW);
-                printf("liga vento\n");
-                delay(2);
-            }
             bcm2835_close();
     }
 
