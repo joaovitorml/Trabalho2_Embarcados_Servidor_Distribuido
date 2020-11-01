@@ -380,7 +380,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
         }
             float temp = comp_data.temperature;
             float umi = comp_data.humidity;
-       	    print_sensor_data(&comp_data, temp, umi);
+       	    print_sensor_data(&comp_data);
 	        printf("%s",asctime(timeinfo));
             fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
             i++;
