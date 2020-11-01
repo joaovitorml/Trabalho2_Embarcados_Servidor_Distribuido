@@ -25,6 +25,8 @@
 
 
 void config_gpio_proj(){
+   if (!bcm2835_init())
+        exit();	
     gpio_lamp_ar(L1);
     gpio_lamp_ar(L2);
     gpio_lamp_ar(L3);
@@ -45,7 +47,7 @@ void gpio_lamp_ar(char porta, int input_user){
     // Set the pin to be an output
             bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_OUTP);
 
-            if(input user){
+            if(input_user){
                 bcm2835_gpio_write(porta, LOW);
                 printf("liga porta %c", porta);
                 delay(2);
@@ -65,9 +67,6 @@ void gpio_sensores(char porta) {
     // Trava o processo na memória para evitar SWAP
     mlockall(MCL_CURRENT | MCL_FUTURE);
     
-    if (!bcm2835_init())
-        return 1;
-  
     bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_INPT);
 
     volatile int i;
