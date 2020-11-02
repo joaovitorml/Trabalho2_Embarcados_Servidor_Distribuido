@@ -9,20 +9,20 @@
 #include <sys/mman.h>
 #include <pthread.h>
 
-#define L1 RPI_V2_GPIO_P1_11
-#define L2 RPI_V2_GPIO_P1_12
-#define L3 RPI_V2_GPIO_P1_13
-#define L4 RPI_V2_GPIO_P1_15
-#define A1 RPI_V2_GPIO_P1_16
-#define A2 RPI_V2_GPIO_P1_18
-#define SP1 RPI_V2_GPIO_P1_22
-#define SP2 RPI_V2_GPIO_P1_37
-#define SA1 RPI_V2_GPIO_P1_29
-#define SA2 RPI_V2_GPIO_P1_31
-#define SA3 RPI_V2_GPIO_P1_32
-#define SA4 RPI_V2_GPIO_P1_36
-#define SA5 RPI_V2_GPIO_P1_38
-#define SA6 RPI_V2_GPIO_P1_40
+#define RPI_V2_GPIO_P1_11 L1
+#define RPI_V2_GPIO_P1_12 L2
+#define RPI_V2_GPIO_P1_13 L3
+#define RPI_V2_GPIO_P1_15 L4
+#define RPI_V2_GPIO_P1_16 A1
+#define RPI_V2_GPIO_P1_18 A2
+#define RPI_V2_GPIO_P1_22 SP1
+#define RPI_V2_GPIO_P1_37 SP2
+#define RPI_V2_GPIO_P1_29 SA1
+#define RPI_V2_GPIO_P1_31 SA2
+#define RPI_V2_GPIO_P1_32 SA3
+#define RPI_V2_GPIO_P1_36 SA4
+#define RPI_V2_GPIO_P1_38 SA5
+#define RPI_V2_GPIO_P1_40 SA6
 
 void gpio_lamp_ar(int porta, int input_user){
     printf("Porta lamp_ar %d\n",porta);

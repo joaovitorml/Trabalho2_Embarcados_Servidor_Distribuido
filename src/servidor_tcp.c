@@ -23,7 +23,7 @@ void TrataClienteTCP(int socketCliente) {
 	}
 }
 
-int servidor(char *argv[]) {
+void* servidor(void *argv[]) {
 	int servidorSocket;
 	int socketCliente;
 	struct sockaddr_in servidorAddr;
