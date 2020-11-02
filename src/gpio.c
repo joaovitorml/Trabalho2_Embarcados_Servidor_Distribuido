@@ -76,22 +76,219 @@ void* gpio_check_status(void* porta) {
     sched_setscheduler(0, SCHED_FIFO, &priority);
     // Trava o processo na memória para evitar SWAP
     mlockall(MCL_CURRENT | MCL_FUTURE);
-    switch(porta){
-	case 1:
-   	 	bcm2835_gpio_fsel(porta_e, BCM2835_GPIO_FSEL_INPT);
-   	 volatile int i;
-    	while (1) {
-        	while (1 == bcm2835_gpio_lev(porta_escol));
-        	while (0 == bcm2835_gpio_lev(porta_escol));
-        	for (i = 0; i < 5000; i++) {
-            		if (0 == bcm2835_gpio_lev(porta_escol)) break;
-        	}
-        	if(i>0){
-            		printf("Porta %d acionada\n\r", porta_escol);
-        	}
+    switch(porta_escol){
+	    case 1:
+   	 	    bcm2835_gpio_fsel(L1, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(L1));
+                while (0 == bcm2835_gpio_lev(L1));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(L1)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
 
-        fflush(stdout);
-    }
+                fflush(stdout);
+            }
+        case 2:
+   	 	    bcm2835_gpio_fsel(L2, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(L2));
+                while (0 == bcm2835_gpio_lev(L2));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(L2)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 3:
+   	 	    bcm2835_gpio_fsel(L3, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(L3));
+                while (0 == bcm2835_gpio_lev(L3));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(L3)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 4:
+   	 	    bcm2835_gpio_fsel(L4, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(L4));
+                while (0 == bcm2835_gpio_lev(L4));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(L4)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 5:
+   	 	    bcm2835_gpio_fsel(A1, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(A1));
+                while (0 == bcm2835_gpio_lev(A1));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(A1)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 6:
+   	 	    bcm2835_gpio_fsel(A2, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(A2));
+                while (0 == bcm2835_gpio_lev(A2));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(A2)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 7:
+   	 	    bcm2835_gpio_fsel(L1, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SP1));
+                while (0 == bcm2835_gpio_lev(SP1));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SP1)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 8:
+   	 	    bcm2835_gpio_fsel(SP2, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SP2));
+                while (0 == bcm2835_gpio_lev(SP2));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SP2)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 9:
+   	 	    bcm2835_gpio_fsel(SA1, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA1));
+                while (0 == bcm2835_gpio_lev(SA1));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA1)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 10:
+   	 	    bcm2835_gpio_fsel(SA2, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA2));
+                while (0 == bcm2835_gpio_lev(SA2));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA2)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 11:
+   	 	    bcm2835_gpio_fsel(SA3, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA3));
+                while (0 == bcm2835_gpio_lev(SA3));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA3)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 12:
+   	 	    bcm2835_gpio_fsel(SA4, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA4));
+                while (0 == bcm2835_gpio_lev(SA4));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA4)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 13:
+   	 	    bcm2835_gpio_fsel(SA5, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA5));
+                while (0 == bcm2835_gpio_lev(SA5));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA5)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        case 14:
+   	 	    bcm2835_gpio_fsel(SA6, BCM2835_GPIO_FSEL_INPT);
+   	        volatile int i;
+            while (1) {
+                while (1 == bcm2835_gpio_lev(SA6));
+                while (0 == bcm2835_gpio_lev(SA6));
+                for (i = 0; i < 5000; i++) {
+                        if (0 == bcm2835_gpio_lev(SA6)) break;
+                }
+                if(i>0){
+                        printf("Porta %d acionada\n\r", porta_escol);
+                }
+
+                fflush(stdout);
+            }
+        default:
+            break;
 }
 
 void gpio_check(){
