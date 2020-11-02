@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <bcm2835.h>
+//#include <bcm2835.h>
 #include <sched.h>
 #include <sys/mman.h>
 

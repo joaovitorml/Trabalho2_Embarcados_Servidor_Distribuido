@@ -38,11 +38,13 @@
 #include <time.h>          //Used for UART
 #include <fcntl.h>          //Used for UART
 #include <termios.h>       //Used for UART
+
 #include "bme280.h"
 #include "bme280_defs.h"
 #include "gpio.h"
+#include "servidor_tcp.h"
 
-#include "bcm2835.h"
+//#include "bcm2835.h"
 
 // LCD definitions
 
@@ -175,6 +177,14 @@ int main(int argc, char* argv[])
 {
     struct bme280_dev dev;
     struct identifier id;
+
+    if (argc != 2) {
+		printf("Uso: %s <Porta>\n", argv[0]);
+		exit(1);
+	}
+
+    pthread_t thread_id;
+    pthread_create (&thread_id, NULL, &servidor, &argv);
 
     /* Make sure to select BME280_I2C_ADDR_PRIM or BME280_I2C_ADDR_SEC as needed */
     id.dev_addr = BME280_I2C_ADDR_PRIM;
