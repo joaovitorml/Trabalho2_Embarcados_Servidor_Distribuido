@@ -76,10 +76,10 @@ void* gpio_check_status(void* porta) {
     sched_setscheduler(0, SCHED_FIFO, &priority);
     // Trava o processo na memória para evitar SWAP
     mlockall(MCL_CURRENT | MCL_FUTURE);
-    switch(porta_escol){
+    volatile int i;
+    switch(*porta_escol){
 	    case 1:
    	 	    bcm2835_gpio_fsel(L1, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(L1));
                 while (0 == bcm2835_gpio_lev(L1));
@@ -94,7 +94,6 @@ void* gpio_check_status(void* porta) {
             }
         case 2:
    	 	    bcm2835_gpio_fsel(L2, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(L2));
                 while (0 == bcm2835_gpio_lev(L2));
@@ -109,7 +108,6 @@ void* gpio_check_status(void* porta) {
             }
         case 3:
    	 	    bcm2835_gpio_fsel(L3, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(L3));
                 while (0 == bcm2835_gpio_lev(L3));
@@ -124,7 +122,6 @@ void* gpio_check_status(void* porta) {
             }
         case 4:
    	 	    bcm2835_gpio_fsel(L4, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(L4));
                 while (0 == bcm2835_gpio_lev(L4));
@@ -139,7 +136,6 @@ void* gpio_check_status(void* porta) {
             }
         case 5:
    	 	    bcm2835_gpio_fsel(A1, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(A1));
                 while (0 == bcm2835_gpio_lev(A1));
@@ -154,7 +150,6 @@ void* gpio_check_status(void* porta) {
             }
         case 6:
    	 	    bcm2835_gpio_fsel(A2, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(A2));
                 while (0 == bcm2835_gpio_lev(A2));
@@ -169,7 +164,6 @@ void* gpio_check_status(void* porta) {
             }
         case 7:
    	 	    bcm2835_gpio_fsel(L1, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SP1));
                 while (0 == bcm2835_gpio_lev(SP1));
@@ -184,7 +178,6 @@ void* gpio_check_status(void* porta) {
             }
         case 8:
    	 	    bcm2835_gpio_fsel(SP2, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SP2));
                 while (0 == bcm2835_gpio_lev(SP2));
@@ -199,7 +192,6 @@ void* gpio_check_status(void* porta) {
             }
         case 9:
    	 	    bcm2835_gpio_fsel(SA1, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA1));
                 while (0 == bcm2835_gpio_lev(SA1));
@@ -214,7 +206,6 @@ void* gpio_check_status(void* porta) {
             }
         case 10:
    	 	    bcm2835_gpio_fsel(SA2, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA2));
                 while (0 == bcm2835_gpio_lev(SA2));
@@ -229,7 +220,6 @@ void* gpio_check_status(void* porta) {
             }
         case 11:
    	 	    bcm2835_gpio_fsel(SA3, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA3));
                 while (0 == bcm2835_gpio_lev(SA3));
@@ -244,7 +234,6 @@ void* gpio_check_status(void* porta) {
             }
         case 12:
    	 	    bcm2835_gpio_fsel(SA4, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA4));
                 while (0 == bcm2835_gpio_lev(SA4));
@@ -259,7 +248,6 @@ void* gpio_check_status(void* porta) {
             }
         case 13:
    	 	    bcm2835_gpio_fsel(SA5, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA5));
                 while (0 == bcm2835_gpio_lev(SA5));
@@ -274,7 +262,6 @@ void* gpio_check_status(void* porta) {
             }
         case 14:
    	 	    bcm2835_gpio_fsel(SA6, BCM2835_GPIO_FSEL_INPT);
-   	        volatile int i;
             while (1) {
                 while (1 == bcm2835_gpio_lev(SA6));
                 while (0 == bcm2835_gpio_lev(SA6));
@@ -290,48 +277,63 @@ void* gpio_check_status(void* porta) {
         default:
             break;
 }
+}
 
 void gpio_check(){
+    int porta = 1;
 
     pthread_t thread_id1;
-    pthread_create (&thread_id1, NULL, &gpio_check_status, 1);
+    pthread_create (&thread_id1, NULL, &gpio_check_status, &porta);
 
+    porta = 2;
     pthread_t thread_id2;
-    pthread_create (&thread_id2, NULL, &gpio_check_status, 2);
+    pthread_create (&thread_id2, NULL, &gpio_check_status, &porta);
 
+    porta = 3;
     pthread_t thread_id3;
-    pthread_create (&thread_id3, NULL, &gpio_check_status, 3);
+    pthread_create (&thread_id3, NULL, &gpio_check_status, &porta);
 
+    porta = 4;
     pthread_t thread_id4;
-    pthread_create (&thread_id4, NULL, &gpio_check_status, 4);
+    pthread_create (&thread_id4, NULL, &gpio_check_status, &porta);
 
+    porta = 5;
     pthread_t thread_id5;
-    pthread_create (&thread_id5, NULL, &gpio_check_status, 5);
+    pthread_create (&thread_id5, NULL, &gpio_check_status, &porta);
 
+    porta = 6;
     pthread_t thread_id6;
-    pthread_create (&thread_id6, NULL, &gpio_check_status, 6);
+    pthread_create (&thread_id6, NULL, &gpio_check_status, &porta);
 
+    porta = 7;
     pthread_t thread_id7;
-    pthread_create (&thread_id7, NULL, &gpio_check_status, 7);
+    pthread_create (&thread_id7, NULL, &gpio_check_status, &porta);
 
+    porta = 8;
     pthread_t thread_id8;
-    pthread_create (&thread_id8, NULL, &gpio_check_status, 8);
+    pthread_create (&thread_id8, NULL, &gpio_check_status, &porta);
 
+    porta = 9;
     pthread_t thread_id9;
-    pthread_create (&thread_id9, NULL, &gpio_check_status, 9);
+    pthread_create (&thread_id9, NULL, &gpio_check_status, &porta);
 
+    porta = 10;
     pthread_t thread_id10;
-    pthread_create (&thread_id10, NULL, &gpio_check_status, 10);
+    pthread_create (&thread_id10, NULL, &gpio_check_status, &porta);
 
+    porta = 11;
     pthread_t thread_id11;
-    pthread_create (&thread_id11, NULL, &gpio_check_status, 11);
+    pthread_create (&thread_id11, NULL, &gpio_check_status, &porta);
 
+    porta = 12;
     pthread_t thread_id12;
-    pthread_create (&thread_id12, NULL, &gpio_check_status, 12);
+    pthread_create (&thread_id12, NULL, &gpio_check_status, &porta);
 
+    porta = 13;
     pthread_t thread_id13;
-    pthread_create (&thread_id13, NULL, &gpio_check_status, 13);
+    pthread_create (&thread_id13, NULL, &gpio_check_status, &porta);
 
+    porta = 14;
     pthread_t thread_id14;
-    pthread_create (&thread_id14, NULL, &gpio_check_status, 14);
+    pthread_create (&thread_id14, NULL, &gpio_check_status, &porta);
 }
