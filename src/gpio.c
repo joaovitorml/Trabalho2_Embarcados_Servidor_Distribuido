@@ -4,9 +4,10 @@
 // 
 #include <stdio.h>
 #include <stdlib.h>
-//#include <bcm2835.h>
+#include <bcm2835.h>
 #include <sched.h>
 #include <sys/mman.h>
+#include <pthread.h>
 
 #define L1 RPI_V2_GPIO_P1_11
 #define L2 RPI_V2_GPIO_P1_12
@@ -23,8 +24,8 @@
 #define SA5 RPI_V2_GPIO_P1_38
 #define SA6 RPI_V2_GPIO_P1_40
 
-void gpio_lamp_ar(char* porta, int input_user){
-    printf("Porta lamp_ar %s\n",porta)
+void gpio_lamp_ar(int porta, int input_user){
+    printf("Porta lamp_ar %d\n",porta);
     // Set the pin to be an output
             bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_OUTP);
             if(input_user){
@@ -67,8 +68,9 @@ void config_gpio_proj(int input_user, int equip){
 
 }
 
-void gpio_check_status(char* porta) {
-    printf("Porta sensor %d\n", porta);
+void* gpio_check_status(void* porta) {
+    uint8_t * porta_escol = (uint8_t *) porta;
+    printf("Porta sensor %d\n", porta_escol);
     // Define a prioridade do programa / thread como máxima 
     const struct sched_param priority = {1};
     sched_setscheduler(0, SCHED_FIFO, &priority);
@@ -79,13 +81,13 @@ void gpio_check_status(char* porta) {
 
     volatile int i;
     while (1) {
-        while (1 == bcm2835_gpio_lev(porta));
-        while (0 == bcm2835_gpio_lev(porta));
+        while (1 == bcm2835_gpio_lev(porta_escol));
+        while (0 == bcm2835_gpio_lev(porta_escol));
         for (i = 0; i < 5000; i++) {
-            if (0 == bcm2835_gpio_lev(porta)) break;
+            if (0 == bcm2835_gpio_lev(porta_escol)) break;
         }
         if(i>0){
-            printf("Porta %s acionada\n\r", porta);
+            printf("Porta %d acionada\n\r", porta_escol);
         }
 
         fflush(stdout);

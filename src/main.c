@@ -44,7 +44,7 @@
 #include "gpio.h"
 #include "servidor_tcp.h"
 
-//#include "bcm2835.h"
+#include "bcm2835.h"
 
 // LCD definitions
 
