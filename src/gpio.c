@@ -9,22 +9,22 @@
 #include <sys/mman.h>
 #include <pthread.h>
 
-#define RPI_V2_GPIO_P1_11 L1
-#define RPI_V2_GPIO_P1_12 L2
-#define RPI_V2_GPIO_P1_13 L3
-#define RPI_V2_GPIO_P1_15 L4
-#define RPI_V2_GPIO_P1_16 A1
-#define RPI_V2_GPIO_P1_18 A2
-#define RPI_V2_GPIO_P1_22 SP1
-#define RPI_V2_GPIO_P1_37 SP2
-#define RPI_V2_GPIO_P1_29 SA1
-#define RPI_V2_GPIO_P1_31 SA2
-#define RPI_V2_GPIO_P1_32 SA3
-#define RPI_V2_GPIO_P1_36 SA4
-#define RPI_V2_GPIO_P1_38 SA5
-#define RPI_V2_GPIO_P1_40 SA6
+#define L1 RPI_V2_GPIO_P1_11
+#define L2 RPI_V2_GPIO_P1_12
+#define L3 RPI_V2_GPIO_P1_13
+#define L4 RPI_V2_GPIO_P1_15
+#define A1 RPI_V2_GPIO_P1_16
+#define A2 RPI_V2_GPIO_P1_18
+#define SP1 RPI_V2_GPIO_P1_22
+#define SP2 RPI_V2_GPIO_P1_37
+#define SA1 RPI_V2_GPIO_P1_29
+#define SA2 RPI_V2_GPIO_P1_31
+#define SA3 RPI_V2_GPIO_P1_32
+#define SA4 RPI_V2_GPIO_P1_36
+#define SA5 RPI_V2_GPIO_P1_38
+#define SA6 RPI_V2_GPIO_P1_40
 
-void gpio_lamp_ar(int porta, int input_user){
+void gpio_lamp_ar(uint8_t porta, int input_user){
     printf("Porta lamp_ar %d\n",porta);
     // Set the pin to be an output
             bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_OUTP);
@@ -69,26 +69,26 @@ void config_gpio_proj(int input_user, int equip){
 }
 
 void* gpio_check_status(void* porta) {
-    uint8_t * porta_escol = (uint8_t *) porta;
+    int* porta_escol = (int *) porta;
     printf("Porta sensor %d\n", porta_escol);
     // Define a prioridade do programa / thread como máxima 
     const struct sched_param priority = {1};
     sched_setscheduler(0, SCHED_FIFO, &priority);
     // Trava o processo na memória para evitar SWAP
     mlockall(MCL_CURRENT | MCL_FUTURE);
-    
-    bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_INPT);
-
-    volatile int i;
-    while (1) {
-        while (1 == bcm2835_gpio_lev(porta_escol));
-        while (0 == bcm2835_gpio_lev(porta_escol));
-        for (i = 0; i < 5000; i++) {
-            if (0 == bcm2835_gpio_lev(porta_escol)) break;
-        }
-        if(i>0){
-            printf("Porta %d acionada\n\r", porta_escol);
-        }
+    switch(porta){
+	case 1:
+   	 	bcm2835_gpio_fsel(porta_e, BCM2835_GPIO_FSEL_INPT);
+   	 volatile int i;
+    	while (1) {
+        	while (1 == bcm2835_gpio_lev(porta_escol));
+        	while (0 == bcm2835_gpio_lev(porta_escol));
+        	for (i = 0; i < 5000; i++) {
+            		if (0 == bcm2835_gpio_lev(porta_escol)) break;
+        	}
+        	if(i>0){
+            		printf("Porta %d acionada\n\r", porta_escol);
+        	}
 
         fflush(stdout);
     }
@@ -97,44 +97,44 @@ void* gpio_check_status(void* porta) {
 void gpio_check(){
 
     pthread_t thread_id1;
-    pthread_create (&thread_id1, NULL, &gpio_check_status, &L1);
+    pthread_create (&thread_id1, NULL, &gpio_check_status, 1);
 
     pthread_t thread_id2;
-    pthread_create (&thread_id2, NULL, &gpio_check_status, &L2);
+    pthread_create (&thread_id2, NULL, &gpio_check_status, 2);
 
     pthread_t thread_id3;
-    pthread_create (&thread_id3, NULL, &gpio_check_status, &L3);
+    pthread_create (&thread_id3, NULL, &gpio_check_status, 3);
 
     pthread_t thread_id4;
-    pthread_create (&thread_id4, NULL, &gpio_check_status, &L4);
+    pthread_create (&thread_id4, NULL, &gpio_check_status, 4);
 
     pthread_t thread_id5;
-    pthread_create (&thread_id5, NULL, &gpio_check_status, &A1);
+    pthread_create (&thread_id5, NULL, &gpio_check_status, 5);
 
     pthread_t thread_id6;
-    pthread_create (&thread_id6, NULL, &gpio_check_status, &A2);
+    pthread_create (&thread_id6, NULL, &gpio_check_status, 6);
 
     pthread_t thread_id7;
-    pthread_create (&thread_id7, NULL, &gpio_check_status, &SP1);
+    pthread_create (&thread_id7, NULL, &gpio_check_status, 7);
 
     pthread_t thread_id8;
-    pthread_create (&thread_id8, NULL, &gpio_check_status, &SP2);
+    pthread_create (&thread_id8, NULL, &gpio_check_status, 8);
 
     pthread_t thread_id9;
-    pthread_create (&thread_id9, NULL, &gpio_check_status, &SA1);
+    pthread_create (&thread_id9, NULL, &gpio_check_status, 9);
 
     pthread_t thread_id10;
-    pthread_create (&thread_id10, NULL, &gpio_check_status, &SA2);
+    pthread_create (&thread_id10, NULL, &gpio_check_status, 10);
 
     pthread_t thread_id11;
-    pthread_create (&thread_id11, NULL, &gpio_check_status, &SA3);
+    pthread_create (&thread_id11, NULL, &gpio_check_status, 11);
 
     pthread_t thread_id12;
-    pthread_create (&thread_id12, NULL, &gpio_check_status, &SA4);
+    pthread_create (&thread_id12, NULL, &gpio_check_status, 12);
 
     pthread_t thread_id13;
-    pthread_create (&thread_id13, NULL, &gpio_check_status, &SA5);
+    pthread_create (&thread_id13, NULL, &gpio_check_status, 13);
 
     pthread_t thread_id14;
-    pthread_create (&thread_id14, NULL, &gpio_check_status, &SA6);
+    pthread_create (&thread_id14, NULL, &gpio_check_status, 14);
 }
