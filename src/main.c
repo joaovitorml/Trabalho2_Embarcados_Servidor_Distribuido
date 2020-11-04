@@ -183,9 +183,6 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 
-    pthread_t thread_id;
-    pthread_create (&thread_id, NULL, &servidor, &argv);
-
     /* Make sure to select BME280_I2C_ADDR_PRIM or BME280_I2C_ADDR_SEC as needed */
     id.dev_addr = BME280_I2C_ADDR_PRIM;
     /* Variable to define the result */
@@ -349,8 +346,6 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
         return rslt;
     }
 
-    printf("Temperature\n");
-
     /*Calculate the minimum delay required between consecutive measurement based upon the sensor enabled
      *  and the oversampling configuration. */
     req_delay = bme280_cal_meas_delay(&dev->settings);
@@ -391,17 +386,22 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
         }
             float temp = comp_data.temperature;
             float umi = comp_data.humidity;
+            float data = {temp,umi};
        	    print_sensor_data(&comp_data);
 	        printf("%s",asctime(timeinfo));
             fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
             i++;
-	        sleep(2);
+	        sleep(1);
             fclose(file);
 
             if (!bcm2835_init())
                 return 1;
  
             config_gpio_proj();
+
+            pthread_t thread_id;
+            pthread_create (&thread_id, NULL, &Servidor, &data);
+
             bcm2835_close();
     }
 

@@ -21,9 +21,10 @@ void TrataClienteTCP(int socketCliente) {
 		if((tamanhoRecebido = recv(socketCliente, buffer, 16, 0)) < 0)
 			printf("Erro no recv()\n");
 	}
+	printf("%s",buffer);
 }
 
-void* servidor(void *argv[]) {
+void* Servidor(void *args) {
 	int servidorSocket;
 	int socketCliente;
 	struct sockaddr_in servidorAddr;
@@ -31,7 +32,7 @@ void* servidor(void *argv[]) {
 	unsigned short servidorPorta;
 	unsigned int clienteLength;
 
-	servidorPorta = atoi(argv[1]);
+	servidorPorta = 4001;
 
 	// Abrir Socket
 	if((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
