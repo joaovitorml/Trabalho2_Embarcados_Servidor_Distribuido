@@ -7,4 +7,4 @@
 
 void TrataClienteTCP(int socketCliente);
 
-int servidor(int argc, char *argv[]);
+void* Servidor(void *args);
