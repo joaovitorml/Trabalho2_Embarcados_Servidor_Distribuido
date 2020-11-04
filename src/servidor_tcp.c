@@ -25,6 +25,9 @@ void TrataClienteTCP(int socketCliente) {
 }
 
 void* Servidor(void *args) {
+
+	struct bme280_data *ptr_comp_data = (struct bme280_data*) args;
+
 	int servidorSocket;
 	int socketCliente;
 	struct sockaddr_in servidorAddr;
@@ -32,7 +35,7 @@ void* Servidor(void *args) {
 	unsigned short servidorPorta;
 	unsigned int clienteLength;
 
-	servidorPorta = 4001;
+	servidorPorta = 5000;
 
 	// Abrir Socket
 	if((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)

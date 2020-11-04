@@ -327,7 +327,9 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
     uint32_t req_delay;
 
     /* Structure to get the pressure, temperature and humidity values */
-    struct bme280_data comp_data;
+    struct bme280_data comp_data, *ptr_comp_data;
+
+    ptr_comp_data = &comp_data;
 
     /* Recommended mode of operation: Indoor navigation */
     dev->settings.osr_h = BME280_OVERSAMPLING_1X;
@@ -386,7 +388,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
         }
             float temp = comp_data.temperature;
             float umi = comp_data.humidity;
-            float data = {temp,umi};
+            float data[] = {temp,umi};
        	    print_sensor_data(&comp_data);
 	        printf("%s",asctime(timeinfo));
             fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
@@ -400,7 +402,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
             config_gpio_proj();
 
             pthread_t thread_id;
-            pthread_create (&thread_id, NULL, &Servidor, &data);
+            pthread_create (&thread_id, NULL, &Servidor, ptr_comp_data);
 
             bcm2835_close();
     }
