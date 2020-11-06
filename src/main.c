@@ -388,7 +388,10 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
         }
             float temp = comp_data.temperature;
             float umi = comp_data.humidity;
-            float data[] = {temp,umi};
+            
+            valores[0] = comp_data.humidity;
+            valores[1] = comp_data.temperature;
+
        	    print_sensor_data(&comp_data);
 	        printf("%s",asctime(timeinfo));
             fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
@@ -399,7 +402,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
             if (!bcm2835_init())
                 return 1;
  
-            config_gpio_proj();
+            config_gpio_proj(1,1);
 
             pthread_t thread_id;
             pthread_create (&thread_id, NULL, &Servidor, ptr_comp_data);

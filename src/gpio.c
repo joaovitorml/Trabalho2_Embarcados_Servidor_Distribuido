@@ -69,7 +69,7 @@ void config_gpio_proj(int input_user, int equip){
 }
 
 void* gpio_check_status(void* porta) {
-    int* porta_escol = (int *) porta;
+    int porta_escol = (int) porta;
     printf("Porta sensor %d\n", porta_escol);
     // Define a prioridade do programa / thread como máxima 
     const struct sched_param priority = {1};

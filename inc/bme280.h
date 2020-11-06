@@ -57,6 +57,8 @@ extern "C" {
 /* Header includes */
 #include "bme280_defs.h"
 
+float valores[2];
+
 /**
  * \ingroup bme280
  * \defgroup bme280ApiInit Initialization
