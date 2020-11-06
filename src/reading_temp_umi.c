@@ -5,6 +5,8 @@
 #include "bcm2835.h"
 #include "reading_temp_umi.h"
 
+#include "servidor_tcp.h"
+
 float valores[2];
 
 /*!

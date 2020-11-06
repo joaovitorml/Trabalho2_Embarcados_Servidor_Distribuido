@@ -12,9 +12,7 @@ void TrataClienteTCP(int socketCliente) {
 	char buffer[50];
 
 	while (1) {
-		char temp[] = valores[0];
-		char umi[] = valores[1];
-		sprintf(buffer,"%0.2lfC %0.2lf%%", temp, umi);
+		sprintf(buffer,"%0.2lfC %0.2lf%%", valores[0], valores[1]);
 		if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 			printf("Erro no envio - send()\n");
 	}
