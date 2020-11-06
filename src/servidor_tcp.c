@@ -6,20 +6,17 @@
 #include <unistd.h>
 
 #include "servidor_tcp.h"
+#include "bme280.h"
 
 void TrataClienteTCP(int socketCliente) {
-	char buffer[16];
-	int tamanhoRecebido;
+	char buffer[50];
 
-	if((tamanhoRecebido = recv(socketCliente, buffer, 16, 0)) < 0)
-		printf("Erro no recv()\n");
-
-	while (tamanhoRecebido > 0) {
-		if(send(socketCliente, buffer, tamanhoRecebido, 0) != tamanhoRecebido)
+	while (1) {
+		char temp[] = valores[0];
+		char umi[] = valores[1];
+		sprintf(buffer,"%0.2lfC %0.2lf%%", temp, umi);
+		if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 			printf("Erro no envio - send()\n");
-		
-		if((tamanhoRecebido = recv(socketCliente, buffer, 16, 0)) < 0)
-			printf("Erro no recv()\n");
 	}
 	printf("%s",buffer);
 }
