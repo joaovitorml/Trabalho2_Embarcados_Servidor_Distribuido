@@ -23,7 +23,7 @@
 
 
 build:
-	gcc ./src/main.c ./src/bme280.c ./src/gpio.c -I ./inc -lwiringPi -lbcm2835 -lpthread -o ./bin/bin
+	gcc ./src/*.c -I ./inc -lwiringPi -lbcm2835 -lpthread -o ./bin/bin
 run:
 	./bin/bin /dev/i2c-1
 clean:

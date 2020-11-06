@@ -48,6 +48,8 @@
 /* To identify filter and standby settings selected by user */
 #define FILTER_STANDBY_SETTINGS  UINT8_C(0x18)
 
+float valores[2];
+
 /*!
  * @brief This internal API puts the device to sleep mode.
  *

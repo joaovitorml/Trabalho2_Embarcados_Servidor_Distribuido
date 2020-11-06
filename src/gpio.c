@@ -77,7 +77,7 @@ void* gpio_check_status(void* porta) {
     // Trava o processo na memória para evitar SWAP
     mlockall(MCL_CURRENT | MCL_FUTURE);
     volatile int i;
-    switch(*porta_escol){
+    switch(porta_escol){
 	    case 1:
    	 	    bcm2835_gpio_fsel(L1, BCM2835_GPIO_FSEL_INPT);
             while (1) {
