@@ -178,10 +178,8 @@ int main(int argc, char* argv[])
     struct bme280_dev dev;
     struct identifier id;
 
-    if (argc != 2) {
-		printf("Uso: %s <Porta>\n", argv[0]);
-		exit(1);
-	}
+    pthread_t thread_id;
+    pthread_create (&thread_id, NULL, &Servidor, NULL);
 
     /* Make sure to select BME280_I2C_ADDR_PRIM or BME280_I2C_ADDR_SEC as needed */
     id.dev_addr = BME280_I2C_ADDR_PRIM;
@@ -232,6 +230,8 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Failed to initialize the device (code %+d).\n", rslt);
         exit(1);
     }
+
+    config_gpio_proj(1,1);
 
     rslt = stream_sensor_data_forced_mode(&dev);
     if (rslt != BME280_OK)

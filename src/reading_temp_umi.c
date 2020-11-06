@@ -98,11 +98,6 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
 
             if (!bcm2835_init())
                 return 1;
- 
-            config_gpio_proj(1,1);
-
-            pthread_t thread_id;
-            pthread_create (&thread_id, NULL, &Servidor, ptr_comp_data);
 
             bcm2835_close();
     }
