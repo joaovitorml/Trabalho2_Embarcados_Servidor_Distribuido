@@ -15,8 +15,10 @@ void TrataClienteTCP(int socketCliente) {
 		sprintf(buffer,"%0.2lfC %0.2lf%%", valores[1], valores[0]);
 		if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 			printf("Erro no envio - send()\n");
+		recv(socketCliente, buffer, 16, 0);
+		printf("%s\n",buffer);
+                sleep(1);
 	}
-	printf("%s",buffer);
 }
 
 void* Servidor(void *args) {

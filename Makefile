@@ -25,7 +25,7 @@
 build:
 	gcc ./src/*.c -I ./inc -lwiringPi -lbcm2835 -lpthread -o ./bin/bin
 run:
-	./bin/bin "192.168.0.53" /dev/i2c-1
+	./bin/bin  /dev/i2c-1
 clean:
 	-rm -f $(OBJDIR)/*.o $(EXE)
 	rm -v ./bin/bin
