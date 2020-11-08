@@ -10,14 +10,22 @@
 
 void TrataClienteTCP(int socketCliente) {
 	char buffer[50];
+	char buffer_temper[50];
 
 	while (1) {
 		recv(socketCliente, buffer, 16, 0);
 		printf("%s\n",buffer);
-		config_gpio_proj(1,1);
-		//sprintf(buffer,"%0.2lfC %0.2lf%%", valores[1], valores[0]);
-		if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
-			printf("Erro no envio - send()\n");
+		if(buffer == '5'){
+			recv(socketCliente, buffer_temper, 16, 0);
+			printf("%s\n",buffer_temper);
+		}
+		else{
+			config_gpio_proj(1,1);
+			//sprintf(buffer,"%0.2lfC %0.2lf%%", valores[1], valores[0]);
+			if(buffer == '1')
+				if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
+					printf("Erro no envio - send()\n");
+		}
         sleep(1);
 	}
 }

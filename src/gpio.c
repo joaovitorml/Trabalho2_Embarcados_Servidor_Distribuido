@@ -24,11 +24,11 @@
 #define SA5 RPI_V2_GPIO_P1_38
 #define SA6 RPI_V2_GPIO_P1_40
 
-void gpio_lamp_ar(uint8_t porta, int input_user){
+void gpio_lamp_ar(uint8_t porta, char input_user){
     printf("Porta lamp_ar %d\n",porta);
     // Set the pin to be an output
             bcm2835_gpio_fsel(porta, BCM2835_GPIO_FSEL_OUTP);
-            if(input_user){
+            if(input_user == '1'){
                 bcm2835_gpio_write(porta, LOW);
                 printf("liga porta %d", porta);
                 delay(2);
@@ -40,26 +40,26 @@ void gpio_lamp_ar(uint8_t porta, int input_user){
             }
 }
 
-void config_gpio_proj(int input_user, int equip){
+void config_gpio_proj(char input_user, char equip){
    if (!bcm2835_init())
         exit(0);
     switch(equip){
-        case 1:
+        case '1':
             gpio_lamp_ar(L1,input_user);
             break;
-        case 2:
+        case '2':
             gpio_lamp_ar(L2,input_user);
             break;
-        case 3:
+        case '3':
             gpio_lamp_ar(L3,input_user);
             break;
-        case 4:
+        case '4':
             gpio_lamp_ar(L4,input_user);
             break;
-        case 5:
+        case '5':
             gpio_lamp_ar(A1,input_user);
             break;
-        case 6:
+        case '6':
             gpio_lamp_ar(A2,input_user);
             break;
         default:
