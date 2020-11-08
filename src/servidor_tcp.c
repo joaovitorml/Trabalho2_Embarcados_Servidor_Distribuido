@@ -35,6 +35,7 @@ void TrataClienteTCP(int socketCliente) {
 				memset(buffer, 0, sizeof buffer);
 				break;
 			case '4':
+				memset(buffer, 0, sizeof buffer);
 				if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 					printf("Erro no envio - send()\n");
 				memset(buffer, 0, sizeof buffer);
