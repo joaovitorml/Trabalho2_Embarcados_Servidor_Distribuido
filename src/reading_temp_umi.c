@@ -93,7 +93,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
 	        printf("%s",asctime(timeinfo));
             fprintf(file, "Medicao %d - Hora: %s - Temperatura: %f - Umidade %f\n", i+1, asctime(timeinfo), temp, umi);
             i++;
-	        sleep(2);
+	        sleep(4);
             fclose(file);
 
             if (!bcm2835_init())

@@ -231,8 +231,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    config_gpio_proj(1,1);
-
     rslt = stream_sensor_data_forced_mode(&dev);
     if (rslt != BME280_OK)
     {
