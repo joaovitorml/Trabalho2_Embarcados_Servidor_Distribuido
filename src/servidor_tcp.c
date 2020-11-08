@@ -21,21 +21,29 @@ void TrataClienteTCP(int socketCliente) {
 			case '1':
 				recv(socketCliente, dispo, 16, 0);
 				config_gpio_proj(buffer[0], dispo[0]);
+				memset(buffer, 0, sizeof buffer);
+				memset(dispo, 0, sizeof dispo);
 				break;
 			case '2':
 				recv(socketCliente, dispo, 16, 0);
 				config_gpio_proj(buffer[0], dispo[0]);
+				memset(buffer, 0, sizeof buffer);
+				memset(dispo, 0, sizeof dispo);
 				break;
 			case '3':
 				gpio_check();
+				memset(buffer, 0, sizeof buffer);
 				break;
 			case '4':
 				if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 					printf("Erro no envio - send()\n");
+				memset(buffer, 0, sizeof buffer);
 				break;
 			case '5':
 				recv(socketCliente, buffer_temper, 16, 0);
 				printf("%s\n",buffer_temper);
+				memset(buffer, 0, sizeof buffer);
+				memset(buffer_temper, 0, sizeof buffer_temper);
 				break;
 			default:
 				break;
