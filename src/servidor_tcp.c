@@ -7,24 +7,38 @@
 
 #include "servidor_tcp.h"
 #include "reading_temp_umi.h"
+#include "gpio.h"
 
 void TrataClienteTCP(int socketCliente) {
 	char buffer[50];
+	char dispo[50];
 	char buffer_temper[50];
 
 	while (1) {
 		recv(socketCliente, buffer, 16, 0);
-		printf("%s\n",buffer);
-		if(buffer == '5'){
-			recv(socketCliente, buffer_temper, 16, 0);
-			printf("%s\n",buffer_temper);
-		}
-		else{
-			config_gpio_proj(1,1);
-			//sprintf(buffer,"%0.2lfC %0.2lf%%", valores[1], valores[0]);
-			if(buffer == '1')
+		printf("%c\n",buffer[0]);
+		switch(buffer[0]){
+			case '1':
+				recv(socketCliente, dispo, 16, 0);
+				config_gpio_proj(buffer[0], dispo[0]);
+				break;
+			case '2':
+				recv(socketCliente, dispo, 16, 0);
+				config_gpio_proj(buffer[0], dispo[0]);
+				break;
+			case '3':
+				gpio_check();
+				break;
+			case '4':
 				if(send(socketCliente, buffer, strlen(buffer)+1, 0) == 1)
 					printf("Erro no envio - send()\n");
+				break;
+			case '5':
+				recv(socketCliente, buffer_temper, 16, 0);
+				printf("%s\n",buffer_temper);
+				break;
+			default:
+				break;
 		}
         sleep(1);
 	}
