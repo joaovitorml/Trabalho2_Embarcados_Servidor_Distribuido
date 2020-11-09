@@ -229,7 +229,7 @@ void* gpio_check_status(void* porta){
                 //while (1 == bcm2835_gpio_lev(SA5));
                 //while (0 == bcm2835_gpio_lev(SA5));
                 for (i = 0; i < 5000; i++) {
-                    if(bcm2835_gpio_lev(SA5){
+                    if(bcm2835_gpio_lev(SA5)){
                         printf("Porta %d acionada\n\r", porta_escol);
                     }
                 }
